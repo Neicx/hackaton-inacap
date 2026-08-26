@@ -77,6 +77,7 @@ export class UsersService {
       sub: user.id,
       email: user.email,
       name: user.name,
+      role: user.role,
     });
 
     return {
@@ -85,6 +86,7 @@ export class UsersService {
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
         created_at: user.created_at,
         updated_at: user.updated_at,
       },
