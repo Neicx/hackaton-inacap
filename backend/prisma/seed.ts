@@ -20,17 +20,17 @@ async function main() {
     update: {},
     create: {
       name: "Fuan200",
-      email: "admin@gmail.com",
+      email: "admin@gmail.cl",
       hashed_password: PASSWORD_HASH,
       role: "admin",
     },
   });
 
   const tecnicosData = [
-    { name: "Roberto Fuentes", email: "roberto@gmail.com" },
-    { name: "Camila Soto", email: "camila@gmail.com" },
-    { name: "Ignacio Pardo", email: "ignacio@gmail.com" },
-    { name: "Fernanda Rojas", email: "fernanda@gmail.com" },
+    { name: "Roberto Fuentes", email: "tech1@gmail.cl" },
+    { name: "Camila Soto", email: "tech2@gmail.cl" },
+    { name: "Ignacio Pardo", email: "ignacio@gmail.cl" },
+    { name: "Fernanda Rojas", email: "fernanda@gmail.cl" },
   ];
 
   const tecnicos = await Promise.all(
@@ -48,7 +48,7 @@ async function main() {
     update: {},
     create: {
       name: "Faena Los Andes",
-      email: "faena.losandes@gmail.com",
+      email: "usu@gmail.cl",
       hashed_password: PASSWORD_HASH,
       role: "user",
     },
