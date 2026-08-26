@@ -39,15 +39,15 @@ export class AuthGuard implements CanActivate {
 
     try {
       request.user = verifyJwt(token);
-
-      const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [context.getHandler(), context.getClass()]);
-
-      if (requiredRoles && !requiredRoles.includes(request.user.role as string)) {
-        throw new ForbiddenException('INSUFFICIENT_PERMISSIONS');
-      }
-      return true;
     } catch {
       throw new UnauthorizedException('INVALID_TOKEN');
     }
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [context.getHandler(), context.getClass()]);
+
+    if (requiredRoles && !requiredRoles.includes(request.user.role as string)) {
+      throw new ForbiddenException('INSUFFICIENT_PERMISSIONS');
+    }
+
+    return true;
   }
 }

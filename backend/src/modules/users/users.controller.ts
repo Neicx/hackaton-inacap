@@ -22,6 +22,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Roles('admin','technical')
   @Get('get-user-by-id/:id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -32,6 +33,7 @@ export class UsersController {
     return this.usersService.update(id, dto);
   }
 
+  @Roles('admin','technical')
   @Delete('delete-user-by-id/:id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
