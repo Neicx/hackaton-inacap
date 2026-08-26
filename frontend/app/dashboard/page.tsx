@@ -24,7 +24,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100" suppressHydrationWarning>
       <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
         <div className="flex items-center gap-4">
@@ -42,8 +42,10 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-semibold mb-4">Bienvenido, {user.name}!</h2>
-          <div className="space-y-2">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800">
+            Bienvenido, {user.name}!
+          </h2>
+          <div className="space-y-2 text-gray-700">
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Rol:</strong> {user.role}</p>
             <p><strong>ID:</strong> {user.id}</p>
