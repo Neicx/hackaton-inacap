@@ -9,12 +9,7 @@ import { TicketsModule } from './modules/tickets/tickets.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    UsersModule,
-    MachinesModule,
-    TicketsModule,
-  ],
+  imports: [PrismaModule,UsersModule,MachinesModule,TicketsModule,],
   controllers: [AppController],
   providers: [
     AppService,
