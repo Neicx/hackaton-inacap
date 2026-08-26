@@ -22,4 +22,41 @@ model User {
   email String @unique
   hashed_password String
   role String
+
+  created_tickets Ticket[] @relation("CreatedTickets")
+  assigned_tickets Ticket[] @relation("AssignedTickets")
+
+}
+
+model Ticket {
+  id String @id @default(uuid())
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+  priority Int
+  status String
+  description String
+
+  created_by_id  String
+  created_by     User    @relation("CreatedTickets", fields: [created_by_id], references: [id])
+
+
+  assigned_to_id  String?
+  assigned_to User? @relation("AssignedTickets", fields: [assigned_to_id], references: [id])
+
+  machine_id String
+  machine Machine @relation(fields: [machine_id], references: [id])
+}
+
+model Machine {
+  id String @id @default(uuid())
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name String
+  type String
+  tickets Ticket[]
 }
