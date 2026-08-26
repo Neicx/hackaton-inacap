@@ -17,6 +17,7 @@ export class UsersService {
         name: createUserDto.name,
         email: createUserDto.email,
         hashed_password: hashed_password,
+        role: createUserDto.role,
       },
       omit: {
         hashed_password: true,

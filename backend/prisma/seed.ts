@@ -50,7 +50,7 @@ async function main() {
       name: "Faena Los Andes",
       email: "faena.losandes@gmail.com",
       hashed_password: PASSWORD_HASH,
-      role: "client",
+      role: "user",
     },
   });
 
@@ -84,14 +84,6 @@ async function main() {
     });
   }
 
-  console.log({
-    admin: admin.email,
-    tecnicos: tecnicos.map((t) => t.email),
-    solicitante: solicitante.email,
-    machine: machine.name,
-    passwordParaTodos: DEFAULT_PASSWORD,
-  });
-}
 
 main()
   .then(async () => {
