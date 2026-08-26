@@ -8,5 +8,4 @@ export class CreateMachineDto {
   @IsNotEmpty()
   @IsString()
   type: string;
-
 }
