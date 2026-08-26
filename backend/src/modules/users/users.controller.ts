@@ -9,6 +9,7 @@ import { LoginDto } from './dto/login.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @NoAuthRequired()
   @Post('create-user')
   create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
