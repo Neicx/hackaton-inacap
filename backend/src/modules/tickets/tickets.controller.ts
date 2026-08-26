@@ -5,7 +5,7 @@ import { TicketsService } from './tickets.service';
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  @Get('create-ticket')
+  @Get('get-all-tickets')
   getAllTickets() {
     return this.ticketsService.getAllTickets();
   }
