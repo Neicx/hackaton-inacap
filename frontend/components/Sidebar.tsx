@@ -24,7 +24,7 @@ export default function Sidebar() {
   ...(isAdmin ? [{ label: 'Técnicos', href: '/dashboard/technicians' }] : []),
 ];
   return (
-    <aside className="w-60 shrink-0 h-screen sticky top-0 bg-white border-r border-slate-200 flex flex-col">
+    <aside className="w-60 shrink-0 h-screen fixed top-0 left-0 bg-white border-r border-slate-200 flex flex-col">
       <div className="px-5 py-5 border-b border-slate-100">
         <span className="text-lg font-bold text-slate-900 tracking-tight">
           Inacap-Hackaton
