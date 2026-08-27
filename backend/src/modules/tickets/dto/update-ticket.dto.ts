@@ -1,28 +1,29 @@
 import { IsInt, IsString, IsUUID, IsOptional, Min, Max, IsIn } from 'class-validator';
 
-export class CreateTicketDto {
+export class UpdateTicketDto {
+  @IsOptional()
   @IsString()
-  name!: string;
+  name?: string;
 
+  @IsOptional()
   @IsInt()
   @Min(1)
   @Max(5)
-  priority!: number;
+  priority?: number;
 
+  @IsOptional()
   @IsIn(['open', 'in_progress', 'closed'])
-  status!: string;
+  status?: string;
 
+  @IsOptional()
   @IsString()
-  description!: string;
-
-  @IsUUID()
-  created_by_id!: string;
+  description?: string;
 
   @IsOptional()
   @IsUUID()
   assigned_to_id?: string;
 
+  @IsOptional()
   @IsUUID()
-  machine_id!: string;
+  machine_id?: string;
 }
-
