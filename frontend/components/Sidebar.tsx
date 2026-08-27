@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth-store';
 
 const NAV_ITEMS = [
+  { label: 'Panel general', href: '/panel-general' },
   { label: 'Dashboard', href: '/dashboard' },
   { label: 'Mi perfil', href: '/dashboard/profile' },
 ];
