@@ -28,7 +28,7 @@ export default function RootLayout({
         {children}
 
         <footer className="bg-white text-center text-sm text-slate-500 py-4">
-          <p className="text-xs"> Desarrollado por <a href="https://github.com/Neicx">Neicx</a> y <a href="https://github.com/bvargasxd">Braulio</a> con ❤️
+          <p className="text-xs"> Desarrollado por <a href="https://github.com/Neicx">Neicx</a> y <a href="https://github.com/bvargasxd">LittleBoy</a> con ❤️
           </p>
         </footer>
       </body>
