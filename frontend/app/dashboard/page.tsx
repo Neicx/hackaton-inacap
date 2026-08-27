@@ -114,7 +114,7 @@ export default function TicketTable() {
         if (mRes.ok) setMachines(await mRes.json());
         if (uRes.ok) {
           const users = await uRes.json();
-          setTechnicians(users.filter((u: User) => u.role === 'technical' || u.role === 'admin'));
+          setTechnicians(users.filter((u: User) => u.role === 'technical'));
         }
       } catch {
         // ignore list load errors; modal still opens
