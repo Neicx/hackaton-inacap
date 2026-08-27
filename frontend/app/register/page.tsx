@@ -11,6 +11,7 @@ export default function RegisterPage() {
     email: '',
     password: '',
     role: 'user' as 'admin' | 'technical' | 'user',
+    specialty: '' as string,
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,8 +21,20 @@ export default function RegisterPage() {
     setLoading(true);
     setError('');
 
+    if (formData.role === 'technical' && !formData.specialty) {
+      setError('Debes seleccionar una especialidad');
+      setLoading(false);
+      return;
+    }
+
     try {
-      await register(formData.name, formData.email, formData.password, formData.role);
+      await register(
+        formData.name,
+        formData.email,
+        formData.password,
+        formData.role,
+        formData.specialty || undefined
+      );
       router.push('/login');
     } catch (err: any) {
       setError(err.message || 'Error al crear usuario');
@@ -93,7 +106,7 @@ export default function RegisterPage() {
             </label>
             <select
               value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value as any })}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value as any, specialty: '' })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             >
               <option value="user">Usuario</option>
@@ -101,6 +114,26 @@ export default function RegisterPage() {
               <option value="admin">Administrador</option>
             </select>
           </div>
+
+          {formData.role === 'technical' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Especialidad
+              </label>
+              <select
+                value={formData.specialty}
+                onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                required
+              >
+                <option value="">Selecciona especialidad</option>
+                <option value="mecanico">Mecánico</option>
+                <option value="electricista">Electricista</option>
+                <option value="maquina">Máquina</option>
+                <option value="general">General</option>
+              </select>
+            </div>
+          )}
 
           <button
             type="submit"

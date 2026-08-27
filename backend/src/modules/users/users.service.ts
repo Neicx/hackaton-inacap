@@ -18,6 +18,7 @@ export class UsersService {
         email: createUserDto.email,
         hashed_password: hashed_password,
         role: createUserDto.role,
+        specialty: createUserDto.specialty || null,
       },
       omit: {
         hashed_password: true,
@@ -48,6 +49,7 @@ export class UsersService {
       data: {
         name: dto.name,
         email: dto.email,
+        specialty: dto.specialty,
       },
       omit: { hashed_password: true },
     });
@@ -78,6 +80,7 @@ export class UsersService {
       email: user.email,
       name: user.name,
       role: user.role,
+      specialty: user.specialty,
     });
 
     return {
@@ -87,6 +90,7 @@ export class UsersService {
         name: user.name,
         email: user.email,
         role: user.role,
+        specialty: user.specialty,
         created_at: user.created_at,
         updated_at: user.updated_at,
       },

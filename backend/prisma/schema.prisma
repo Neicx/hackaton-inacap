@@ -1,16 +1,12 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
-  
 }
 
 datasource db {
   provider = "postgresql"
-
 }
 
 model User {
@@ -23,10 +19,10 @@ model User {
   email String @unique
   hashed_password String
   role String
+  specialty String?
 
   created_tickets Ticket[] @relation("CreatedTickets")
   assigned_tickets Ticket[] @relation("AssignedTickets")
-
 }
 
 model Ticket {
@@ -40,11 +36,10 @@ model Ticket {
   status String
   description String
 
-  created_by_id  String
-  created_by     User    @relation("CreatedTickets", fields: [created_by_id], references: [id])
+  created_by_id String
+  created_by User @relation("CreatedTickets", fields: [created_by_id], references: [id])
 
-
-  assigned_to_id  String?
+  assigned_to_id String?
   assigned_to User? @relation("AssignedTickets", fields: [assigned_to_id], references: [id])
 
   machine_id String

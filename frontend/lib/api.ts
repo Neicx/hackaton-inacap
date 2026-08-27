@@ -27,13 +27,13 @@ export async function login(email: string, password: string): Promise<LoginRespo
   return response.json();
 }
 
-export async function register(name: string, email: string, password: string, role: string) {
+export async function register(name: string, email: string, password: string, role: string, specialty?: string) {
   const response = await fetch(`${API_URL}/users/create-user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name, email, password, role }),
+    body: JSON.stringify({ name, email, password, role, specialty }),
   });
 
   if (!response.ok) {
@@ -43,6 +43,7 @@ export async function register(name: string, email: string, password: string, ro
 
   return response.json();
 }
+
 
 export async function getUsers(token: string) {
   const response = await fetch(`${API_URL}/users/get-all-users`, {
