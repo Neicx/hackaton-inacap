@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth-store';
@@ -41,15 +40,9 @@ export default function DashboardPage() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800">
-            Bienvenido, {user.name}!
-          </h2>
-          <div className="space-y-2 text-gray-700">
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Rol:</strong> {user.role}</p>
-            <p><strong>ID:</strong> {user.id}</p>
-          </div>
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-gray-800">Bienvenido, {user.name}</h2>
+          <p className="text-sm text-gray-500">Panel de tickets de mantenimiento</p>
         </div>
       </main>
     </div>
