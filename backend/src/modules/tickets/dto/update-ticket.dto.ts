@@ -8,11 +8,11 @@ export class UpdateTicketDto {
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Max(5)
+  @Max(4)
   priority?: number;
 
   @IsOptional()
-  @IsIn(['open', 'in_progress', 'closed'])
+  @IsIn(['pendiente', 'en_progreso', 'resuelto', 'cerrado'])
   status?: string;
 
   @IsOptional()
