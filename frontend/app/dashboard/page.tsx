@@ -87,8 +87,7 @@ export default function TicketTable() {
       if (filters.technician_id && t.assigned_to_id !== filters.technician_id && t.assigned_to?.id !== filters.technician_id) return false;
       if (filters.search) {
         const q = filters.search.toLowerCase();
-        const haystack = `${t.name} ${t.description} ${t.machine?.name ?? ''}`.toLowerCase();
-        if (!haystack.includes(q)) return false;
+        if (!t.name.toLowerCase().includes(q)) return false;
       }
       return true;
     });
@@ -151,7 +150,7 @@ export default function TicketTable() {
                   type="text"
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                  placeholder="Buscar por título, descripción..."
+                  placeholder="Buscar por título"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
