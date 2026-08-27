@@ -13,21 +13,29 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
 
-    try {
-      const response = await login(email, password);
-      setAuth(response.jwt_token, response.user);
+  try {
+    const response = await login(email, password);
+    setAuth(response.jwt_token, response.user);
+    
+    // Redirigir según rol
+    if (response.user.role === 'user') {
+      router.push('/dashboard/tickets/new');
+    } else {
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Error al iniciar sesión');
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err: any) {
+    setError(err.message || 'Error al iniciar sesión');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100" suppressHydrationWarning>

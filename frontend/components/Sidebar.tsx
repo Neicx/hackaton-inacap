@@ -10,13 +10,24 @@ export default function Sidebar() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
 
-  const NAV_ITEMS = [
-    { label: 'Panel general', href: '/panel-general' },
-    { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
-    ...(user?.role === 'admin' ? [{ label: 'Técnicos', href: '/dashboard/technicians' }] : []),
-    { label: 'Mi perfil', href: '/dashboard/profile' },
-  ];
+  const isAdmin = user?.role === 'admin';
+  const isTechnical = user?.role === 'technical';
+  const isUser = user?.role === 'user';
+ 
+ const NAV_ITEMS = [
+  ...(isAdmin || isTechnical
+    ? [{ label: 'Panel general', href: '/panel-general' }]
+    : []),
+  ...(isAdmin || isTechnical
+    ? [{ label: 'Dashboard', href: '/dashboard' }]
+    : []),
+  { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
+  ...(isUser ? [{ label: 'Mis Tickets', href: '/dashboard/my-tickets' }] : []),
+  ...(isAdmin ? [{ label: 'Técnicos', href: '/dashboard/technicians' }] : []),
+  { label: 'Mi perfil', href: '/dashboard/profile' },
+];
+
+
 
   const handleLogout = () => {
     logout();

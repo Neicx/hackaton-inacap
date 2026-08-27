@@ -14,6 +14,34 @@ export class TicketsService {
           select: { id: true, name: true, email: true },
         },
         assigned_to: {
+          select: { id: true, name: true, email: true, specialty: true },
+        },
+        machine: true,
+      },
+    });
+  }
+
+  getMyCreatedTickets(userId: string) {
+    return this.prisma.ticket.findMany({
+      where: { created_by_id: userId },
+      include: {
+        machine: true,
+        assigned_to: {
+          select: { id: true, name: true, specialty: true },
+        },
+      },
+      orderBy: { created_at: 'desc' },
+    });
+  }
+
+  getPendingTickets() {
+    return this.prisma.ticket.findMany({
+      where: {
+        status: 'pendiente',
+        assigned_to_id: null,
+      },
+      include: {
+        created_by: {
           select: { id: true, name: true, email: true },
         },
         machine: true,
@@ -29,58 +57,66 @@ export class TicketsService {
           select: { id: true, name: true, email: true },
         },
         assigned_to: {
-          select: { id: true, name: true, email: true },
+          select: { id: true, name: true, email: true, specialty: true },
         },
         machine: true,
       },
     });
   }
- 
 
- createTicket(dto: CreateTicketDto) {
-  return this.prisma.ticket.create({
-    data: {
-      name: dto.name,
-      priority: dto.priority,
-      status: dto.status || 'pendiente',
-      description: dto.description,
-      created_by_id: dto.created_by_id,
-      assigned_to_id: dto.assigned_to_id,
-      machine_id: dto.machine_id,
-    },
-    include: {
-      created_by: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-        },
+  createTicket(dto: CreateTicketDto) {
+    return this.prisma.ticket.create({
+      data: {
+        name: dto.name,
+        priority: dto.priority,
+        status: dto.status || 'pendiente',
+        description: dto.description,
+        created_by_id: dto.created_by_id,
+        assigned_to_id: dto.assigned_to_id,
+        machine_id: dto.machine_id,
       },
-      assigned_to: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
+      include: {
+        created_by: {
+          select: { id: true, name: true, email: true, role: true },
         },
+        assigned_to: {
+          select: { id: true, name: true, email: true, role: true, specialty: true },
+        },
+        machine: true,
       },
-      machine: true,
-    },
-  });
-}
-  
+    });
+  }
 
-
-
+  assignTicket(id: string, assignedToId: string) {
+    return this.prisma.ticket.update({
+      where: { id },
+      data: {
+        assigned_to_id: assignedToId,
+        status: 'en_progreso',
+      },
+      include: {
+        created_by: {
+          select: { id: true, name: true, email: true },
+        },
+        assigned_to: {
+          select: { id: true, name: true, email: true, specialty: true },
+        },
+        machine: true,
+      },
+    });
+  }
 
   updateTicket(id: string, dto: UpdateTicketDto) {
     return this.prisma.ticket.update({
       where: { id },
       data: dto,
       include: {
-        created_by: true,
-        assigned_to: true,
+        created_by: {
+          select: { id: true, name: true, email: true },
+        },
+        assigned_to: {
+          select: { id: true, name: true, email: true, specialty: true },
+        },
         machine: true,
       },
     });
