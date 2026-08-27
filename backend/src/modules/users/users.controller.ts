@@ -10,11 +10,19 @@ import { Roles } from '../../auth/roles.decorator';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  
   @NoAuthRequired()
   @Post('create-user')
   create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
   }
+
+  @Roles('admin')
+  @Get('get-technicians')
+  getTechnicians() {
+    return this.usersService.getTechnicians();
+  }
+
 
   @Roles('admin','technical')
   @Get('get-all-users')

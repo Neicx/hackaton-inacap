@@ -32,6 +32,32 @@ export class UsersService {
     });
   }
 
+
+ getTechnicians() {
+  return this.prisma.user.findMany({
+    where: { role: 'technical' },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      specialty: true,
+      created_at: true,
+      updated_at: true,
+      assigned_tickets: {
+        where: {
+          status: {
+            in: ['pendiente', 'en_progreso'],
+          },
+        },
+        select: {
+          id: true,
+          status: true,
+        },
+      },
+    },
+  });
+}
+
   findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {

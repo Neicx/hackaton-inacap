@@ -4,18 +4,19 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth-store';
 
-const NAV_ITEMS = [
-  { label: 'Panel general', href: '/panel-general' },
-  { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
-  { label: 'Mi perfil', href: '/dashboard/profile' },
-];
-
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+
+  const NAV_ITEMS = [
+    { label: 'Panel general', href: '/panel-general' },
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
+    ...(user?.role === 'admin' ? [{ label: 'Técnicos', href: '/dashboard/technicians' }] : []),
+    { label: 'Mi perfil', href: '/dashboard/profile' },
+  ];
 
   const handleLogout = () => {
     logout();

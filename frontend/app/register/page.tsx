@@ -129,7 +129,7 @@ export default function RegisterPage() {
                 <option value="">Selecciona especialidad</option>
                 <option value="mecanico">Mecánico</option>
                 <option value="electricista">Electricista</option>
-                <option value="maquina">Máquina</option>
+                <option value="maquinaria">Máquinaria</option>
                 <option value="general">General</option>
               </select>
             </div>

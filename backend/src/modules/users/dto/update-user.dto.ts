@@ -10,6 +10,6 @@ export class UpdateUserDto {
   email?: string;
 
   @IsOptional()
-  @IsIn(['mecanico', 'electricista', 'maquina', 'general'])
+  @IsIn(['mecanico', 'electricista', 'maquinaria', 'general'])
   specialty?: string;
 }

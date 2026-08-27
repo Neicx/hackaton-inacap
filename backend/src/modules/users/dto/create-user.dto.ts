@@ -15,6 +15,6 @@ export class CreateUserDto {
   role: string;
 
   @IsOptional()
-  @IsIn(['mecanico', 'electricista', 'maquina', 'general'])
+  @IsIn(['mecanico', 'electricista', 'maquinaria', 'general'])
   specialty?: string;
 }
