@@ -7,6 +7,7 @@ import { useAuthStore } from '@/lib/auth-store';
 const NAV_ITEMS = [
   { label: 'Panel general', href: '/panel-general' },
   { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
   { label: 'Mi perfil', href: '/dashboard/profile' },
 ];
 

@@ -35,17 +35,44 @@ export class TicketsService {
       },
     });
   }
+ 
 
-  createTicket(dto: CreateTicketDto) {
-    return this.prisma.ticket.create({
-      data: dto,
-      include: {
-        created_by: true,
-        assigned_to: true,
-        machine: true,
+ createTicket(dto: CreateTicketDto) {
+  return this.prisma.ticket.create({
+    data: {
+      name: dto.name,
+      priority: dto.priority,
+      status: dto.status || 'pendiente',
+      description: dto.description,
+      created_by_id: dto.created_by_id,
+      assigned_to_id: dto.assigned_to_id,
+      machine_id: dto.machine_id,
+    },
+    include: {
+      created_by: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+        },
       },
-    });
-  }
+      assigned_to: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+        },
+      },
+      machine: true,
+    },
+  });
+}
+  
+
+
+
 
   updateTicket(id: string, dto: UpdateTicketDto) {
     return this.prisma.ticket.update({

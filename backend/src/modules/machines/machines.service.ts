@@ -15,4 +15,7 @@ export class MachinesService {
         });
     }
 
+    async getAllMachines(){
+        return this.prisma.machine.findMany();
+    }
 }

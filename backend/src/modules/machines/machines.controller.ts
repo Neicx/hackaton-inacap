@@ -1,4 +1,4 @@
-import { Controller,Post, Body} from '@nestjs/common';
+import { Controller, Post, Get, Body } from '@nestjs/common';
 import { CreateMachineDto } from './dto/create-machine.dto';
 import { MachinesService } from './machines.service';
 
@@ -10,6 +10,9 @@ export class MachinesController {
   create(@Body() dto: CreateMachineDto) {
     return this.machinesService.create(dto);
   }
+
+  @Get("get-all-machines")
+  getAllMachines() {
+    return this.machinesService.getAllMachines();
+  }
 }
-
-

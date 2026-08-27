@@ -6,11 +6,12 @@ export class CreateTicketDto {
 
   @IsInt()
   @Min(1)
-  @Max(4)
+  @Max(5)
   priority!: number;
 
   @IsIn(['pendiente', 'en_progreso', 'resuelto', 'cerrado'])
-  status!: string;
+  @IsOptional()
+  status?: string;
 
   @IsString()
   description!: string;
