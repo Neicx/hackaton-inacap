@@ -132,39 +132,50 @@ export default function AssignedTicketsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8" suppressHydrationWarning>
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Tickets Asignados</h1>
-          <p className="text-sm text-gray-500 mt-1">Gestiona los tickets que te han sido asignados</p>
+    <div className="min-h-screen w-full bg-slate-100" suppressHydrationWarning>
+      {/* Header */}
+      <div className="bg-slate-900 text-white px-8 py-10">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center">
+              <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Tickets Asignados</h1>
+              <p className="text-slate-400 text-sm mt-1">Gestiona los tickets que te han sido asignados</p>
+            </div>
+          </div>
         </div>
+      </div>
 
+      <div className="max-w-5xl mx-auto px-6 py-8">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">
             {error}
           </div>
         )}
 
         {/* Filtros */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6 shadow-sm">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Buscar</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1">Buscar</label>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Máquina, descripción..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Estado</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1">Estado</label>
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 text-sm bg-white"
               >
                 <option value="all">Todos</option>
                 <option value="pendiente">Pendiente</option>
@@ -174,11 +185,11 @@ export default function AssignedTicketsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Prioridad</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1">Prioridad</label>
               <select
                 value={filterPriority}
                 onChange={(e) => setFilterPriority(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 text-sm bg-white"
               >
                 <option value="all">Todas</option>
                 <option value="1">Baja</option>
@@ -189,11 +200,11 @@ export default function AssignedTicketsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Máquina</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1">Máquina</label>
               <select
                 value={filterMachine}
                 onChange={(e) => setFilterMachine(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 text-sm bg-white"
               >
                 <option value="all">Todas</option>
                 {machines.map((m) => (
@@ -207,10 +218,10 @@ export default function AssignedTicketsPage() {
         {/* Lista de tickets */}
         {filteredTickets.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-            <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-16 h-16 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            <p className="text-gray-500 font-medium">No se encontraron tickets</p>
+            <p className="text-slate-500 font-medium">No se encontraron tickets</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -232,8 +243,8 @@ export default function AssignedTicketsPage() {
                         {ticket.machine?.name?.charAt(0)?.toUpperCase() || '?'}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">{ticket.machine?.name || 'Sin máquina'}</h3>
-                        <p className="text-xs text-gray-400">{ticket.machine?.type || '-'}</p>
+                        <h3 className="font-semibold text-slate-900">{ticket.machine?.name || 'Sin máquina'}</h3>
+                        <p className="text-xs text-slate-400">{ticket.machine?.type || '-'}</p>
                       </div>
                     </div>
                     <span className={`px-3 py-1 text-xs font-medium rounded-full ${status.bg} ${status.text} flex items-center gap-1.5`}>
@@ -242,9 +253,9 @@ export default function AssignedTicketsPage() {
                     </span>
                   </div>
 
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{ticket.description}</p>
+                  <p className="text-sm text-slate-600 mb-4 line-clamp-2">{ticket.description}</p>
 
-                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400">
+                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
                     <div className="flex items-center gap-3">
                       <span className={`px-2 py-1 rounded-full font-medium ${priority.bg} ${priority.text}`}>
                         Prioridad: {priority.label}
@@ -253,7 +264,7 @@ export default function AssignedTicketsPage() {
                         {new Date(ticket.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
-                    <span className="text-blue-600 font-medium">Ver detalle →</span>
+                    <span className="text-amber-600 font-medium">Ver detalle →</span>
                   </div>
                 </div>
               );
@@ -266,76 +277,70 @@ export default function AssignedTicketsPage() {
       {selectedTicket && (
         <div className="fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-xl w-[500px] max-w-full max-h-[90vh] overflow-y-auto">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl">
-              <h2 className="text-lg font-semibold text-gray-900">Detalle del Ticket</h2>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white rounded-t-2xl">
+              <h2 className="text-lg font-semibold text-slate-900">Detalle del Ticket</h2>
               <button
                 onClick={() => setSelectedTicket(null)}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-full hover:bg-slate-100 transition-colors"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            {/* Contenido */}
             <div className="px-6 py-4 space-y-4">
-              {/* Máquina */}
               <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
                 <div className="w-12 h-12 rounded-lg bg-slate-200 flex items-center justify-center text-lg font-bold text-slate-600">
                   {selectedTicket.machine?.name?.charAt(0)?.toUpperCase() || '?'}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">{selectedTicket.machine?.name || 'Sin máquina'}</h3>
-                  <p className="text-xs text-gray-400">{selectedTicket.machine?.type || '-'}</p>
+                  <h3 className="font-semibold text-slate-900">{selectedTicket.machine?.name || 'Sin máquina'}</h3>
+                  <p className="text-xs text-slate-400">{selectedTicket.machine?.type || '-'}</p>
                 </div>
               </div>
 
-              {/* Descripción */}
               <div>
-                <span className="text-xs text-gray-400 uppercase">Descripción</span>
-                <p className="text-sm text-gray-700 mt-1">{selectedTicket.description}</p>
+                <span className="text-xs text-slate-400 uppercase">Descripción</span>
+                <p className="text-sm text-slate-700 mt-1">{selectedTicket.description}</p>
               </div>
 
-              {/* Info grid */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-slate-50 rounded-lg p-3">
-                  <span className="text-xs text-gray-400">Prioridad</span>
+                  <span className="text-xs text-slate-400">Prioridad</span>
                   <p className={`text-sm font-medium mt-1 ${PRIORITY_STYLES[selectedTicket.priority]?.text}`}>
                     {PRIORITY_STYLES[selectedTicket.priority]?.label}
                   </p>
                 </div>
                 <div className="bg-slate-50 rounded-lg p-3">
-                  <span className="text-xs text-gray-400">Estado actual</span>
+                  <span className="text-xs text-slate-400">Estado actual</span>
                   <p className={`text-sm font-medium mt-1 ${STATUS_STYLES[selectedTicket.status]?.text}`}>
                     {STATUS_STYLES[selectedTicket.status]?.label}
                   </p>
                 </div>
                 <div className="bg-slate-50 rounded-lg p-3">
-                  <span className="text-xs text-gray-400">Creado por</span>
-                  <p className="text-sm font-medium text-gray-900 mt-1">
+                  <span className="text-xs text-slate-400">Creado por</span>
+                  <p className="text-sm font-medium text-slate-900 mt-1">
                     {selectedTicket.created_by?.name || 'Desconocido'}
                   </p>
                 </div>
                 <div className="bg-slate-50 rounded-lg p-3">
-                  <span className="text-xs text-gray-400">Fecha creación</span>
-                  <p className="text-sm font-medium text-gray-900 mt-1">
+                  <span className="text-xs text-slate-400">Fecha creación</span>
+                  <p className="text-sm font-medium text-slate-900 mt-1">
                     {new Date(selectedTicket.created_at).toLocaleDateString('es-CL')}
                   </p>
                 </div>
               </div>
 
-              {/* Actualizar estado */}
-              <div className="border-t border-gray-100 pt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="border-t border-slate-100 pt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Actualizar estado
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm"
+                    className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-slate-900 text-sm bg-white"
                   >
                     <option value="pendiente">Pendiente</option>
                     <option value="en_progreso">En Progreso</option>
@@ -345,7 +350,7 @@ export default function AssignedTicketsPage() {
                   <button
                     onClick={handleUpdateStatus}
                     disabled={updating}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm font-medium transition-colors"
+                    className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 disabled:opacity-50 text-sm font-medium transition-colors"
                   >
                     {updating ? 'Guardando...' : 'Guardar'}
                   </button>

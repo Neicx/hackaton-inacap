@@ -124,161 +124,178 @@ export default function TicketTable() {
   }, [token]);
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 px-6 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Tablero de tickets</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Listado de solicitudes de mantenimiento.
-        </p>
+    <div className="min-h-screen w-full bg-slate-100" suppressHydrationWarning>
+      {/* Header */}
+      <div className="bg-slate-900 text-white px-8 py-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h6" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Tablero de tickets</h1>
+              <p className="text-slate-400 text-sm mt-1">Listado de solicitudes de mantenimiento</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {loading && <div className="text-center text-gray-400 py-10">Cargando tickets...</div>}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {loading && (
+          <div className="text-center text-slate-400 py-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900 mx-auto mb-4"></div>
+            Cargando tickets...
+          </div>
+        )}
 
-      {error && (
-        <div className="text-center text-red-600 bg-red-50 border border-red-200 rounded-lg py-4">
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="text-center text-red-600 bg-red-50 border border-red-200 rounded-xl py-4">
+            {error}
+          </div>
+        )}
 
-      {!loading && !error && (
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-          <div className="border-b border-gray-100 px-4 py-3">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">Filtros</h2>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Búsqueda</label>
-                <input
-                  type="text"
-                  value={filters.search}
-                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                  placeholder="Buscar por título"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+        {!loading && !error && (
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="border-b border-slate-100 px-5 py-4 bg-slate-50">
+              <h2 className="text-sm font-semibold text-slate-700 mb-3">Filtros</h2>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Búsqueda</label>
+                  <input
+                    type="text"
+                    value={filters.search}
+                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    placeholder="Buscar por título"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Estado</label>
+                  <select
+                    value={filters.status}
+                    onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Todos los estados</option>
+                    {STATUS_ORDER.map((s) => (
+                      <option key={s} value={s}>
+                        {STATUS[s].label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Prioridad</label>
+                  <select
+                    value={filters.priority}
+                    onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Todas las prioridades</option>
+                    {Object.entries(PRIORITY).map(([p, meta]) => (
+                      <option key={p} value={p}>
+                        {meta.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Máquina</label>
+                  <select
+                    value={filters.machine_id}
+                    onChange={(e) => setFilters({ ...filters, machine_id: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Todas las máquinas</option>
+                    {machines.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Técnico</label>
+                  <select
+                    value={filters.technician_id}
+                    onChange={(e) => setFilters({ ...filters, technician_id: e.target.value })}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Todos los técnicos</option>
+                    {technicians.map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {u.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Estado</label>
-                <select
-                  value={filters.status}
-                  onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Todos los estados</option>
-                  {STATUS_ORDER.map((s) => (
-                    <option key={s} value={s}>
-                      {STATUS[s].label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Prioridad</label>
-                <select
-                  value={filters.priority}
-                  onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Todas las prioridades</option>
-                  {Object.entries(PRIORITY).map(([p, meta]) => (
-                    <option key={p} value={p}>
-                      {meta.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Máquina</label>
-                <select
-                  value={filters.machine_id}
-                  onChange={(e) => setFilters({ ...filters, machine_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Todas las máquinas</option>
-                  {machines.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {m.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Técnico</label>
-                <select
-                  value={filters.technician_id}
-                  onChange={(e) => setFilters({ ...filters, technician_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Todos los técnicos</option>
-                  {technicians.map((u) => (
-                    <option key={u.id} value={u.id}>
-                      {u.name}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex items-center justify-between mt-2">
+                <span className="text-xs text-slate-400">
+                  {filteredTickets.length} de {(tickets ?? []).length} solicitudes
+                </span>
+                {hasFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-xs font-medium text-blue-600 hover:text-blue-800"
+                  >
+                    Limpiar filtros
+                  </button>
+                )}
               </div>
             </div>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-xs text-gray-400">
-                {filteredTickets.length} de {(tickets ?? []).length} solicitudes
-              </span>
-              {hasFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="text-xs font-medium text-blue-600 hover:text-blue-800"
-                >
-                  Limpiar filtros
-                </button>
-              )}
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-slate-200">
+                <thead className="bg-slate-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">OT</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Título</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Máquina</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Prioridad</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Estado</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Técnico</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Creado por</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Creado el</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredTickets.map((t) => {
+                    const st = STATUS[t.status] ?? { label: t.status, badge: 'bg-slate-100 text-slate-600' };
+                    const pr = PRIORITY[t.priority] ?? { label: String(t.priority), badge: 'bg-slate-100 text-slate-600' };
+                    return (
+                      <tr
+                        key={t.id}
+                        onClick={() => setSelected(t)}
+                        className="hover:bg-slate-50 transition-colors cursor-pointer"
+                      >
+                        <td className="px-4 py-3 font-mono text-xs text-slate-400">OT-{t.id.slice(0, 4).toUpperCase()}</td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-medium text-slate-800">{t.name}</div>
+                          <div className="text-xs text-slate-400 line-clamp-1">{t.description}</div>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-slate-600">{t.machine?.name ?? '—'}</td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${pr.badge}`}>{pr.label}</span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${st.badge}`}>{st.label}</span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-slate-600">
+                          {t.assigned_to ? t.assigned_to.name : <span className="italic text-slate-300">Sin asignar</span>}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-slate-600">{t.created_by?.name ?? '—'}</td>
+                        <td className="px-4 py-3 text-sm text-slate-500 whitespace-nowrap">{formatDate(t.created_at)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">OT</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Título</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Máquina</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Prioridad</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Técnico asignado</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Creado por</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Creado el</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredTickets.map((t) => {
-                  const st = STATUS[t.status] ?? { label: t.status, badge: 'bg-gray-100 text-gray-600' };
-                  const pr = PRIORITY[t.priority] ?? { label: String(t.priority), badge: 'bg-gray-100 text-gray-600' };
-                  return (
-                    <tr
-                      key={t.id}
-                      onClick={() => setSelected(t)}
-                      className="hover:bg-gray-50 transition-colors cursor-pointer"
-                    >
-                      <td className="px-4 py-3 font-mono text-xs text-gray-400">OT-{t.id.slice(0, 4).toUpperCase()}</td>
-                      <td className="px-4 py-3">
-                        <div className="text-sm font-medium text-gray-800">{t.name}</div>
-                        <div className="text-xs text-gray-400 line-clamp-1">{t.description}</div>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{t.machine?.name ?? '—'}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${pr.badge}`}>{pr.label}</span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${st.badge}`}>{st.label}</span>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-600">
-                        {t.assigned_to ? t.assigned_to.name : <span className="italic text-gray-300">Sin asignar</span>}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{t.created_by?.name ?? '—'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">{formatDate(t.created_at)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {selected && (
         <TicketDetailModal
@@ -355,20 +372,20 @@ function TicketDetailModal({
     }
   };
 
-  const st = STATUS[form.status] ?? { label: ticket.status, badge: 'bg-gray-100 text-gray-600' };
-  const pr = PRIORITY[form.priority] ?? { label: String(ticket.priority), badge: 'bg-gray-100 text-gray-600' };
+  const st = STATUS[form.status] ?? { label: ticket.status, badge: 'bg-slate-100 text-slate-600' };
+  const pr = PRIORITY[form.priority] ?? { label: String(ticket.priority), badge: 'bg-slate-100 text-slate-600' };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-gray-400">OT-{ticket.id.slice(0, 4).toUpperCase()}</span>
+            <span className="font-mono text-xs text-slate-400">OT-{ticket.id.slice(0, 4).toUpperCase()}</span>
             <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${st.badge}`}>{st.label}</span>
             <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${pr.badge}`}>{pr.label}</span>
           </div>
@@ -376,7 +393,7 @@ function TicketDetailModal({
             {!editing && (
               <button
                 onClick={() => setEditing(true)}
-                className="p-2 rounded-md text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors"
+                className="p-2 rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
                 title="Editar"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -386,7 +403,7 @@ function TicketDetailModal({
             )}
             <button
               onClick={onClose}
-              className="p-2 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+              className="p-2 rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
               title="Cerrar"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -413,11 +430,11 @@ function TicketDetailModal({
           ) : (
             <dl className="space-y-4">
               <Field label="Título">
-                <p className="text-gray-800 font-medium">{ticket.name}</p>
-                <p className="text-xs text-gray-400">OT-{ticket.id.slice(0, 4).toUpperCase()}</p>
+                <p className="text-slate-800 font-medium">{ticket.name}</p>
+                <p className="text-xs text-slate-400">OT-{ticket.id.slice(0, 4).toUpperCase()}</p>
               </Field>
               <Field label="Descripción">
-                <p className="text-gray-600 text-sm whitespace-pre-wrap">{ticket.description}</p>
+                <p className="text-slate-600 text-sm whitespace-pre-wrap">{ticket.description}</p>
               </Field>
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Máquina">{ticket.machine?.name ?? '—'}</Field>
@@ -438,10 +455,10 @@ function TicketDetailModal({
         </div>
 
         {editing && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100">
             <button
               onClick={() => setEditing(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+              className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
             >
               Cancelar
             </button>
@@ -462,8 +479,8 @@ function TicketDetailModal({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">{label}</dt>
-      <dd className="text-sm text-gray-700">{children}</dd>
+      <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">{label}</dt>
+      <dd className="text-sm text-slate-700">{children}</dd>
     </div>
   );
 }
@@ -498,30 +515,30 @@ function EditFields({
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Título</label>
+        <label className="block text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Título</label>
         <input
           type="text"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
       <div>
-        <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Descripción</label>
+        <label className="block text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Descripción</label>
         <textarea
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           rows={4}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Prioridad</label>
+          <label className="block text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Prioridad</label>
           <select
             value={form.priority}
             onChange={(e) => setForm({ ...form, priority: Number(e.target.value) })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value={1}>1 - Baja</option>
             <option value={2}>2 - Media</option>
@@ -531,11 +548,11 @@ function EditFields({
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Estado</label>
+          <label className="block text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Estado</label>
           <select
             value={form.status}
             onChange={(e) => setForm({ ...form, status: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {STATUS_ORDER.map((s) => (
               <option key={s} value={s}>
@@ -547,11 +564,11 @@ function EditFields({
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Máquina</label>
+          <label className="block text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Máquina</label>
           <select
             value={form.machine_id}
             onChange={(e) => setForm({ ...form, machine_id: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Sin máquina</option>
             {machines.map((m) => (
@@ -562,11 +579,11 @@ function EditFields({
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Técnico asignado</label>
+          <label className="block text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Técnico asignado</label>
           <select
             value={form.assigned_to_id}
             onChange={(e) => setForm({ ...form, assigned_to_id: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Sin asignar</option>
             {technicians.map((u) => (

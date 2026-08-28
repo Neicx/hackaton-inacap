@@ -15,12 +15,12 @@ type Ticket = {
   assigned_to?: { id: string; name: string } | null;
 };
 
-const PRIORITY_META: Record<number, { label: string; color: string }> = {
-  1: { label: 'Baja', color: '#94a3b8' },
-  2: { label: 'Media', color: '#0ea5e9' },
-  3: { label: 'Alta', color: '#f59e0b' },
-  4: { label: 'Crítica', color: '#ef4444' },
-  5: { label: 'Urgente', color: '#b91c1c' },
+const PRIORITY_META: Record<number, { label: string; color: string; bg: string; text: string }> = {
+  1: { label: 'Baja', color: '#94a3b8', bg: 'bg-slate-50', text: 'text-slate-700' },
+  2: { label: 'Media', color: '#0ea5e9', bg: 'bg-sky-50', text: 'text-sky-700' },
+  3: { label: 'Alta', color: '#f59e0b', bg: 'bg-amber-50', text: 'text-amber-700' },
+  4: { label: 'Crítica', color: '#ef4444', bg: 'bg-red-50', text: 'text-red-700' },
+  5: { label: 'Urgente', color: '#b91c1c', bg: 'bg-red-100', text: 'text-red-800' },
 };
 
 type DaySeries = {
@@ -129,25 +129,40 @@ export default function PanelGeneral() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 px-6 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Panel General</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Resumen general de las solicitudes de mantenimiento del sistema.
-        </p>
+    <div className="min-h-screen w-full bg-slate-100" suppressHydrationWarning>
+      {/* Header */}
+      <div className="bg-slate-900 text-white px-8 py-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center">
+              <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Panel General</h1>
+              <p className="text-slate-400 text-sm mt-1">Sistema de gestión de mantenimiento industrial</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {loading && (
-        <div className="text-center text-gray-400 py-10">Cargando panel...</div>
-      )}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {loading && (
+          <div className="text-center text-slate-400 py-12">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900 mx-auto mb-4"></div>
+            Cargando panel...
+          </div>
+        )}
 
-      {error && (
-        <div className="text-center text-red-600 bg-red-50 border border-red-200 rounded-lg py-4">
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="text-center text-red-600 bg-red-50 border border-red-200 rounded-xl py-4">
+            {error}
+          </div>
+        )}
 
-      {!loading && !error && <Content summary={summary} />}
+        {!loading && !error && <Content summary={summary} />}
+      </div>
     </div>
   );
 }
@@ -157,29 +172,76 @@ function Content({ summary }: { summary: Summary }) {
   const priorityMax = Math.max(1, ...priorityRows.map(([, v]) => v));
 
   const cards = [
-    { label: 'Total solicitudes', value: summary.total, accent: 'border-l-slate-500' },
-    { label: 'Pendientes', value: summary.pendientes, accent: 'border-l-slate-400' },
-    { label: 'En proceso', value: summary.enProgreso, accent: 'border-l-amber-500' },
-    { label: 'Resueltos + Cerrados', value: summary.resueltos, accent: 'border-l-emerald-500' },
+    {
+      label: 'Total Solicitudes',
+      value: summary.total,
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+      ),
+      accent: 'border-l-slate-500',
+      iconBg: 'bg-slate-100 text-slate-600',
+    },
+    {
+      label: 'Pendientes',
+      value: summary.pendientes,
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      accent: 'border-l-amber-500',
+      iconBg: 'bg-amber-100 text-amber-600',
+    },
+    {
+      label: 'En Proceso',
+      value: summary.enProgreso,
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
+      accent: 'border-l-blue-500',
+      iconBg: 'bg-blue-100 text-blue-600',
+    },
+    {
+      label: 'Resueltos',
+      value: summary.resueltos,
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      accent: 'border-l-emerald-500',
+      iconBg: 'bg-emerald-100 text-emerald-600',
+    },
   ];
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
         {cards.map((c) => (
           <div
             key={c.label}
-            className={`bg-white rounded-lg border border-gray-200 border-l-4 ${c.accent} p-4 shadow-sm`}
+            className={`bg-white rounded-xl border border-slate-200 border-l-4 ${c.accent} p-5 shadow-sm hover:shadow-md transition-shadow`}
           >
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{c.label}</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">{c.value}</p>
+            <div className="flex items-center justify-between mb-3">
+              <div className={`w-10 h-10 rounded-lg ${c.iconBg} flex items-center justify-center`}>
+                {c.icon}
+              </div>
+            </div>
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{c.label}</p>
+            <p className="text-3xl font-bold text-slate-900 mt-1">{c.value}</p>
           </div>
         ))}
       </div>
 
+      {/* Gráficos */}
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-800 mb-4">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+          <h2 className="text-sm font-semibold text-slate-800 mb-6">
             Solicitudes por criticidad — últimos 7 días
           </h2>
           <StackedBarChart series={summary.last7Days} />
@@ -192,17 +254,27 @@ function Content({ summary }: { summary: Summary }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-        <div className="bg-white rounded-lg border border-gray-200 border-l-4 border-l-emerald-500 p-5 shadow-sm">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-            Tiempo promedio de resolución
-          </p>
-          <p className="text-3xl font-bold text-gray-900 mt-1">
-            {formatHours(summary.avgHours)}
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            Basado en solicitudes resueltas y cerradas.
-          </p>
+      {/* Tiempo de resolución */}
+      <div className="mt-6">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-500 rounded-xl p-6 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs font-medium text-emerald-100 uppercase tracking-wide">
+                Tiempo promedio de resolución
+              </p>
+              <p className="text-3xl font-bold text-white mt-1">
+                {formatHours(summary.avgHours)}
+              </p>
+              <p className="text-xs text-emerald-200 mt-1">
+                Basado en solicitudes resueltas y cerradas
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -218,27 +290,27 @@ function BarChartCard({
   title: string;
   rows: [string, number][];
   max: number;
-  meta: Record<string, { label: string; color?: string }>;
+  meta: Record<string, { label: string; color?: string; bg?: string; text?: string }>;
 }) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-      <h2 className="text-sm font-semibold text-gray-800 mb-4">{title}</h2>
+    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+      <h2 className="text-sm font-semibold text-slate-800 mb-6">{title}</h2>
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-400 italic">Sin datos</p>
+        <p className="text-sm text-slate-400 italic">Sin datos</p>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-5">
           {rows.map(([key, value]) => {
             const info = meta[key] ?? { label: key };
             const pct = Math.round((value / max) * 100);
             return (
               <div key={key}>
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="font-medium text-gray-600">{info.label}</span>
-                  <span className="text-gray-500">{value}</span>
+                <div className="flex items-center justify-between text-xs mb-2">
+                  <span className="font-medium text-slate-600">{info.label}</span>
+                  <span className={`font-bold ${info.text || 'text-slate-500'}`}>{value}</span>
                 </div>
-                <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full"
+                    className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${pct}%`, backgroundColor: info.color ?? '#6366f1' }}
                   />
                 </div>
@@ -265,8 +337,8 @@ function StackedBarChart({ series }: { series: DaySeries[] }) {
           const height = total > 0 ? Math.max(6, (total / maxTotal) * 100) : 0;
           return (
             <div key={d.day} className="flex-1 flex flex-col items-center justify-end h-full">
-              <span className="text-xs font-semibold text-gray-600 mb-1">{total}</span>
-              <div className="w-full rounded-t-md overflow-hidden flex flex-col-reverse" style={{ height: `${height}%` }}>
+              <span className="text-xs font-bold text-slate-700 mb-1">{total}</span>
+              <div className="w-full rounded-t-lg overflow-hidden flex flex-col-reverse" style={{ height: `${height}%` }}>
                 {Object.entries(d.byPriority)
                   .sort((a, b) => Number(b[0]) - Number(a[0]))
                   .map(([p, v]) => {
@@ -290,16 +362,16 @@ function StackedBarChart({ series }: { series: DaySeries[] }) {
       <div className="flex gap-3 mt-3">
         {series.map((d) => (
           <div key={d.day} className="flex-1 text-center">
-            <span className="text-[11px] font-medium text-gray-400 capitalize">{d.label}</span>
+            <span className="text-[11px] font-medium text-slate-400 capitalize">{d.label}</span>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-wrap gap-4 mt-4 pt-3 border-t border-gray-100">
+      <div className="flex flex-wrap gap-4 mt-4 pt-3 border-t border-slate-100">
         {Object.entries(PRIORITY_META).map(([p, meta]) => (
           <div key={p} className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: meta.color }} />
-            <span className="text-xs text-gray-600">{meta.label}</span>
+            <span className="text-xs text-slate-600">{meta.label}</span>
           </div>
         ))}
       </div>
