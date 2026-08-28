@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateMachineDto {
   @IsNotEmpty()
@@ -8,4 +8,8 @@ export class CreateMachineDto {
   @IsNotEmpty()
   @IsString()
   type: string;
+
+  @IsOptional()
+  @IsString()
+  brand?: string;
 }

@@ -54,5 +54,6 @@ model Machine {
 
   name String
   type String
+  brand String?
   tickets Ticket[]
 }
