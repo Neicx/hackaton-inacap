@@ -20,6 +20,7 @@ const PRIORITY_META: Record<number, { label: string; color: string }> = {
   2: { label: 'Media', color: '#0ea5e9' },
   3: { label: 'Alta', color: '#f59e0b' },
   4: { label: 'Crítica', color: '#ef4444' },
+  5: { label: 'Urgente', color: '#b91c1c' },
 };
 
 type DaySeries = {

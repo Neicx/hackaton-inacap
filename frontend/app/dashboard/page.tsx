@@ -36,6 +36,7 @@ const PRIORITY: Record<number, { label: string; badge: string }> = {
   2: { label: 'Media', badge: 'bg-sky-100 text-sky-700' },
   3: { label: 'Alta', badge: 'bg-amber-100 text-amber-700' },
   4: { label: 'Crítica', badge: 'bg-red-100 text-red-700' },
+  5: { label: 'Urgente', badge: 'bg-red-100 text-red-700' },
 };
 
 const STATUS_ORDER = ['pendiente', 'en_progreso', 'resuelto', 'cerrado'];
@@ -526,6 +527,7 @@ function EditFields({
             <option value={2}>2 - Media</option>
             <option value={3}>3 - Alta</option>
             <option value={4}>4 - Crítica</option>
+            <option value={5}>5 - Urgente</option>
           </select>
         </div>
         <div>
