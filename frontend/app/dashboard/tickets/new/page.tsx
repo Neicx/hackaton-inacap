@@ -79,9 +79,13 @@ export default function NewTicketPage() {
         description: '',
         machine_id: '',
       });
-      
+
       setTimeout(() => {
-        router.push('/dashboard');
+        if (user.role === 'user') {
+          router.push('/dashboard/my-tickets');
+        } else {
+          router.push('/dashboard');
+        }
       }, 1500);
     } catch (err: any) {
       setError(err.message || 'Error al crear el ticket');
@@ -99,17 +103,28 @@ export default function NewTicketPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8" suppressHydrationWarning>
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Crear Nuevo Ticket</h1>
-          <p className="text-sm text-gray-500 mt-1">Reporta un problema con una máquina</p>
+    <div className="min-h-screen w-full bg-slate-100" suppressHydrationWarning>
+      {/* Header */}
+      <div className="bg-slate-900 text-white px-8 py-10">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center">
+              <svg className="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold">Crear Nuevo Ticket</h1>
+              <p className="text-slate-400 text-sm mt-1">Reporta un problema con una máquina</p>
+            </div>
+          </div>
         </div>
+      </div>
 
+      <div className="max-w-3xl mx-auto px-6 py-8">
         {/* Mensajes */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -118,7 +133,7 @@ export default function NewTicketPage() {
         )}
 
         {success && (
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -128,19 +143,19 @@ export default function NewTicketPage() {
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
-          
+          <div className="h-2 bg-gradient-to-r from-amber-500 to-orange-400"></div>
+
           <div className="p-8 space-y-6">
-            {/* Nombre del ticket */}
+            {/* Título */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Título del ticket
               </label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-slate-900"
                 placeholder="Ej: Máquina no enciende"
                 required
               />
@@ -148,7 +163,7 @@ export default function NewTicketPage() {
 
             {/* Prioridad */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Prioridad
               </label>
               <div className="grid grid-cols-5 gap-2">
@@ -173,10 +188,10 @@ export default function NewTicketPage() {
                       key={p}
                       type="button"
                       onClick={() => setFormData({ ...formData, priority: p })}
-                      className={`py-2 px-3 rounded-lg border text-xs font-medium transition-colors ${
+                      className={`py-2.5 px-3 rounded-lg border text-xs font-medium transition-colors ${
                         selected
-                          ? `${colors[p]} ring-2 ring-offset-2 ring-blue-500`
-                          : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
+                          ? `${colors[p]} ring-2 ring-offset-2 ring-amber-500`
+                          : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'
                       }`}
                     >
                       {labels[p]}
@@ -188,13 +203,13 @@ export default function NewTicketPage() {
 
             {/* Máquina */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Máquina
               </label>
               <select
                 value={formData.machine_id}
                 onChange={(e) => setFormData({ ...formData, machine_id: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-slate-900 bg-white"
                 required
               >
                 <option value="">Selecciona una máquina</option>
@@ -208,13 +223,13 @@ export default function NewTicketPage() {
 
             {/* Descripción */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Descripción del problema
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-slate-900"
                 rows={5}
                 placeholder="Describe detalladamente el problema..."
                 required
@@ -222,18 +237,18 @@ export default function NewTicketPage() {
             </div>
 
             {/* Botones */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 border-t border-slate-100">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                className="flex-1 bg-amber-600 text-white py-3 px-4 rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
               >
                 {loading ? 'Creando ticket...' : 'Crear Ticket'}
               </button>
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                className="bg-slate-200 text-slate-700 px-6 py-3 rounded-lg hover:bg-slate-300 transition-colors font-medium"
               >
                 Cancelar
               </button>
