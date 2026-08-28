@@ -22,6 +22,7 @@ export default function Sidebar() {
   { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
   ...(isUser ? [{ label: 'Mis Tickets', href: '/dashboard/my-tickets' }] : []),
   ...(isAdmin ? [{ label: 'Técnicos', href: '/dashboard/technicians' }] : []),
+  ...(isAdmin ? [{ label: 'Maquinarias', href: '/dashboard/machines' }] : []),
 ];
   return (
     <aside className="w-60 shrink-0 h-screen fixed top-0 left-0 bg-white border-r border-slate-200 flex flex-col">
