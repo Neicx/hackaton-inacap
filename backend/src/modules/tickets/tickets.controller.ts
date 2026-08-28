@@ -37,26 +37,32 @@ export class TicketsController {
     return this.ticketsService.getTicketById(id);
   }
 
+  @Roles('admin')
+  @Get('history')
+  getTicketHistory() {
+    return this.ticketsService.getTicketHistory();
+  }
+
   @Post('create-ticket')
-  createTicket(@Body() dto: CreateTicketDto) {
-    return this.ticketsService.createTicket(dto);
+  createTicket(@Body() dto: CreateTicketDto, @Request() req: any) {
+    return this.ticketsService.createTicket(dto, req.user);
   }
 
   @Roles('admin')
   @Patch('assign-ticket/:id')
-  assignTicket(@Param('id') id: string, @Body() body: { assigned_to_id: string }) {
-    return this.ticketsService.assignTicket(id, body.assigned_to_id);
+  assignTicket(@Param('id') id: string, @Body() body: { assigned_to_id: string }, @Request() req: any) {
+    return this.ticketsService.assignTicket(id, body.assigned_to_id, req.user);
   }
 
   @Roles('admin', 'technical')
   @Patch('update-ticket/:id')
-  updateTicket(@Param('id') id: string, @Body() dto: UpdateTicketDto) {
-    return this.ticketsService.updateTicket(id, dto);
+  updateTicket(@Param('id') id: string, @Body() dto: UpdateTicketDto, @Request() req: any) {
+    return this.ticketsService.updateTicket(id, dto, req.user);
   }
 
   @Roles('admin')
   @Delete('delete-ticket/:id')
-  deleteTicket(@Param('id') id: string) {
-    return this.ticketsService.deleteTicket(id);
+  deleteTicket(@Param('id') id: string, @Request() req: any) {
+    return this.ticketsService.deleteTicket(id, req.user);
   }
 }

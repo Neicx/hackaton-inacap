@@ -35,6 +35,7 @@ export default function AdminTicketsPage() {
   const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
   const [selectedTechnician, setSelectedTechnician] = useState<string>('');
   const [assigning, setAssigning] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token || !user) {
@@ -103,6 +104,33 @@ export default function AdminTicketsPage() {
       setError(err.message || 'Error al asignar ticket');
     } finally {
       setAssigning(false);
+    }
+  };
+
+  const handleDelete = async (ticketId: string) => {
+    if (!window.confirm('¿Estás seguro de que deseas eliminar este ticket? Esta acción no se puede deshacer.')) return;
+
+    setDeleting(ticketId);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_URL}/tickets/delete-ticket/${ticketId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Error al eliminar ticket');
+      }
+
+      await fetchData();
+    } catch (err: any) {
+      setError(err.message || 'Error al eliminar ticket');
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -180,12 +208,21 @@ export default function AdminTicketsPage() {
                     </div>
                   </div>
                 ) : (
-                  <button
-                    onClick={() => setSelectedTicket(ticket.id)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Asignar Técnico
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setSelectedTicket(ticket.id)}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      Asignar Técnico
+                    </button>
+                    <button
+                      onClick={() => handleDelete(ticket.id)}
+                      disabled={deleting === ticket.id}
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 transition-colors"
+                    >
+                      {deleting === ticket.id ? 'Eliminando...' : 'Eliminar'}
+                    </button>
+                  </div>
                 )}
               </div>
             ))

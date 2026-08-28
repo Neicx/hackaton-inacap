@@ -60,7 +60,7 @@ export default function ProfilePage() {
       }
 
       const updatedUser = await response.json();
-      setAuth(token, updatedUser);
+      setAuth(token as string, updatedUser);
       setEditing(false);
       setSuccess('Perfil actualizado correctamente');
       setTimeout(() => setSuccess(''), 3000);
@@ -151,7 +151,7 @@ export default function ProfilePage() {
           <div className="px-8 pb-6">
             <div className="flex items-end -mt-12 mb-6">
               <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center text-4xl font-bold text-slate-700 border-4 border-white">
-                {roleStyle.icon}
+                {user.name?.charAt(0)?.toUpperCase() || '?'}
               </div>
               <div className="ml-4 pb-1 bg-white rounded-lg px-4 py-2 shadow-sm">
                 <h2 className="text-xl font-bold text-slate-900">{user.name}</h2>

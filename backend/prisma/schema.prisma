@@ -44,6 +44,27 @@ model Ticket {
 
   machine_id String
   machine Machine @relation(fields: [machine_id], references: [id])
+
+  histories TicketHistory[]
+}
+
+model TicketHistory {
+  id String @id @default(uuid())
+
+  created_at DateTime @default(now())
+
+  action String
+  description String
+  actor_id String?
+  actor_name String?
+
+  ticket_name String?
+  ticket_machine String?
+
+  ticket_id String?
+  ticket Ticket? @relation(fields: [ticket_id], references: [id], onDelete: SetNull)
+
+  @@index([ticket_id])
 }
 
 model Machine {

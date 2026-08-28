@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useApi } from '@/hooks/useApi';
 import { useAuthStore } from '@/lib/auth-store';
+import { useSWRConfig } from 'swr';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -277,10 +278,10 @@ export default function TicketTable() {
                         </td>
                         <td className="px-4 py-3 text-sm text-slate-600">{t.machine?.name ?? '—'}</td>
                         <td className="px-4 py-3">
-                          <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${pr.badge}`}>{pr.label}</span>
+                          <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${pr.badge}`}>{pr.label}</span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full ${st.badge}`}>{st.label}</span>
+                          <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${st.badge}`}>{st.label}</span>
                         </td>
                         <td className="px-4 py-3 text-sm text-slate-600">
                           {t.assigned_to ? t.assigned_to.name : <span className="italic text-slate-300">Sin asignar</span>}
@@ -325,7 +326,9 @@ function TicketDetailModal({
 }) {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState('');
+  const { mutate } = useSWRConfig();
   const [form, setForm] = useState({
     name: ticket.name,
     description: ticket.description,
@@ -334,6 +337,34 @@ function TicketDetailModal({
     machine_id: ticket.machine_id ?? ticket.machine?.id ?? '',
     assigned_to_id: ticket.assigned_to_id ?? ticket.assigned_to?.id ?? '',
   });
+
+  const handleDelete = async () => {
+    if (!window.confirm('¿Estás seguro de que deseas eliminar este ticket? Esta acción no se puede deshacer.')) return;
+    setDeleting(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_URL}/tickets/delete-ticket/${ticket.id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'Error al eliminar ticket');
+      }
+      const key = ['/tickets/get-all-tickets', token] as const;
+      await mutate(
+        key,
+        (current: Ticket[] | undefined) =>
+          (current ?? []).filter((t) => t.id !== ticket.id),
+        false
+      );
+      onClose();
+      mutate(key);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al eliminar el ticket');
+      setDeleting(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -398,6 +429,18 @@ function TicketDetailModal({
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+            )}
+            {!editing && (
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="p-2 rounded-md text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors disabled:opacity-50"
+                title="Eliminar"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </button>
             )}

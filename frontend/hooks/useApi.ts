@@ -5,29 +5,30 @@ import { useAuthStore } from '@/lib/auth-store';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-function createFetcher(token: string | null) {
-  return async (url: string) => {
-    const res = await fetch(`${API_URL}${url}`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+async function fetcher(url: string, token: string) {
+  const res = await fetch(`${API_URL}${url}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.message || `Error ${res.status}`);
-    }
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || `Error ${res.status}`);
+  }
 
-    return res.json();
-  };
+  return res.json();
 }
 
 export function useApi<T>(endpoint: string) {
   const token = useAuthStore((s) => s.token);
-  const fetcher = createFetcher(token);
 
-  const { data, error, isLoading } = useSWR<T>(endpoint, fetcher, {
-    refreshInterval: 10000,
-    revalidateOnFocus: true,
-  });
+  const { data, error, isLoading } = useSWR<T>(
+    token ? [endpoint, token] : null,
+    () => fetcher(endpoint, token as string),
+    {
+      refreshInterval: 10000,
+      revalidateOnFocus: true,
+    }
+  );
 
   return {
     data: data ?? null,
