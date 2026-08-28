@@ -34,6 +34,19 @@ export class TicketsService {
     });
   }
 
+  getMyAssignedTickets(userId: string) {
+    return this.prisma.ticket.findMany({
+      where: { assigned_to_id: userId },
+      include: {
+        machine: true,
+        created_by: {
+          select: { id: true, name: true, email: true },
+        },
+      },
+      orderBy: { created_at: 'desc' },
+    });
+  }
+
   getPendingTickets() {
     return this.prisma.ticket.findMany({
       where: {

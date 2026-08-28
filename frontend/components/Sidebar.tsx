@@ -1,5 +1,6 @@
 'use client';
 
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth-store';
@@ -11,16 +12,17 @@ export default function Sidebar() {
   const isAdmin = user?.role === 'admin';
   const isTechnical = user?.role === 'technical';
   const isUser = user?.role === 'user';
- 
+
  const NAV_ITEMS = [
   ...(isAdmin || isTechnical
     ? [{ label: 'Panel general', href: '/panel-general' }]
     : []),
-  ...(isAdmin || isTechnical
+  ...(isAdmin
     ? [{ label: 'Dashboard', href: '/dashboard' }]
     : []),
   { label: 'Crear Ticket', href: '/dashboard/tickets/new' },
   ...(isUser ? [{ label: 'Mis Tickets', href: '/dashboard/my-tickets' }] : []),
+  ...(isTechnical ? [{ label: 'Tickets Asignados', href: '/dashboard/assigned-tickets' }] : []),
   ...(isAdmin ? [{ label: 'Técnicos', href: '/dashboard/technicians' }] : []),
   ...(isAdmin ? [{ label: 'Maquinarias', href: '/dashboard/machines' }] : []),
 ];

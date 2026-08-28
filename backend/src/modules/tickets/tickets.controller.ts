@@ -25,6 +25,12 @@ export class TicketsController {
     return this.ticketsService.getMyCreatedTickets(req.user.sub);
   }
 
+  @Roles('technical')
+  @Get('get-my-assigned-tickets')
+  getMyAssignedTickets(@Request() req: any) {
+    return this.ticketsService.getMyAssignedTickets(req.user.sub);
+  }
+
   @Roles('admin', 'technical')
   @Get('get-ticket-by-id/:id')
   getTicketById(@Param('id') id: string) {

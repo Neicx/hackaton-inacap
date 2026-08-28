@@ -23,11 +23,14 @@ export default function LoginPage() {
     setAuth(response.jwt_token, response.user);
     
     // Redirigir según rol
-    if (response.user.role === 'user') {
+       if (response.user.role === 'user') {
       router.push('/dashboard/tickets/new');
-    } else {
-      router.push('/dashboard');
+    } else if (response.user.role === 'technical') {
+      router.push('/panel-general');
+    } else if (response.user.role === 'admin') {
+      router.push('/panel-general');
     }
+
   } catch (err: any) {
     setError(err.message || 'Error al iniciar sesión');
   } finally {
